@@ -6,19 +6,24 @@ import MuiDrawer from "../../common/mui/Drawer";
 import Toolbar from "../../common/mui/Toolbar";
 import Box from "../../common/mui/Box";
 
-// TODO: NEED TO HAVE NAVBAR PASS AUTHENTICATED PROP TO RENDER DIFFERENT MENU
 interface DrawerProps {
   open: boolean;
   handleClose: () => void;
+  authenticated: boolean;
 }
 
 function Drawer(props: DrawerProps): JSX.Element {
-  const { open, handleClose } = props;
+  const { open, handleClose, authenticated } = props;
   const drawerWidth = 240;
-  const routes = [
-    { id: uuidv4(), to: "/auth/login", text: "Login" },
-    { id: uuidv4(), to: "/auth/register", text: "Sign Up" },
-  ];
+  const routes = authenticated
+    ? [
+        { id: uuidv4(), to: "/posts/create", text: "Create Post" },
+        { id: uuidv4(), to: "/users/account", text: "jblanchard" },
+      ]
+    : [
+        { id: uuidv4(), to: "/auth/login", text: "Login" },
+        { id: uuidv4(), to: "/auth/register", text: "Sign Up" },
+      ];
 
   const drawer = (
     <Box>

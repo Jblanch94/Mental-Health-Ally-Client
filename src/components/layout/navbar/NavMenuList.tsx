@@ -6,7 +6,7 @@ import NavMenuListItem from "./NavMenuListItem";
 type Route = {
   id: string;
   to: string;
-  text: string;
+  text: any;
 };
 
 interface NavMenuListProps {

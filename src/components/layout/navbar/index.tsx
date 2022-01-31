@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import AppBar from "../../common/mui/AppBar";
-import Toolbar from "../../common/mui/Toolbar";
 import Drawer from "./Drawer";
 import IconButton from "../../common/mui/IconButton";
 import Logo from "./Logo";
@@ -31,6 +30,7 @@ const Navbar = (props: NavbarProps): JSX.Element => {
       sx={{ backgroundColor: (theme) => theme.primary.main }}>
       <CssBaseline />
       <Toolbar
+        component='nav'
         disableGutters
         sx={{ justifyContent: "space-between", alignItems: "center" }}>
         <Logo text='Mental Health Ally' />
@@ -46,7 +46,11 @@ const Navbar = (props: NavbarProps): JSX.Element => {
             <MenuIcon fontSize='medium' />
           </IconButton>
         )}
-        <Drawer open={open} handleClose={handleClose} />
+        <Drawer
+          open={open}
+          handleClose={handleClose}
+          authenticated={authenticated}
+        />
         <NavMenu authenticated={authenticated} />
       </Toolbar>
     </AppBar>

@@ -6,7 +6,7 @@ import ListItemText from "../../common/mui/ListItemText";
 
 interface NavMenuListItemProps {
   to: string;
-  text: string;
+  text: any;
 }
 
 function NavMenuListItem(props: NavMenuListItemProps): JSX.Element {
