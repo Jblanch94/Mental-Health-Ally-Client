@@ -1,13 +1,11 @@
 import { useState } from "react";
 
 function useSessionStorage(key: string) {
-  const [value, setValue] = useState<string | null>(
-    getValueFromSessionStorage(key)
-  );
+  const [value, setValue] = useState<string | null>(null);
 
-  function getValueFromSessionStorage(key: string): string | null {
+  function getValueFromSessionStorage(key: string): void {
     const item = sessionStorage.getItem(key);
-    return item != null ? JSON.parse(item) : null;
+    setValue(item != null ? JSON.parse(item) : null);
   }
 
   function saveValueToSessionStorage(key: string, value: string): void {
@@ -34,6 +32,7 @@ function useSessionStorage(key: string) {
   }
 
   function get(): string | null {
+    getValueFromSessionStorage(key);
     return value;
   }
 

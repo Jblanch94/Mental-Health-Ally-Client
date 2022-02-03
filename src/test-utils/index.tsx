@@ -1,16 +1,22 @@
 import { render, RenderOptions } from "@testing-library/react";
-import React, { FC, ReactElement } from "react";
-import { MemoryRouter } from "react-router-dom";
+import { FC, ReactElement } from "react";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
 
 import theme from "../styles/theme";
+import Home from "../pages/Home";
 
 const ProvidersWrapper: FC = (props) => {
   const { children } = props;
 
   return (
     <ThemeProvider theme={theme}>
-      <MemoryRouter>{children}</MemoryRouter>
+      <MemoryRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+        </Routes>
+        {children}
+      </MemoryRouter>
     </ThemeProvider>
   );
 };

@@ -3,15 +3,6 @@ import userEvent from "@testing-library/user-event";
 
 import Login from "../Login";
 
-/* 
-  test 1: Test the Login Page renders without error
-  test 2: Test that each text field must not be empty and the validation error text shows up
-  test 3: Test that an incorrect password and username combination returns a server error
-  test 4: Test that a correct password and username combination is accepted and the user gets sent to the home page
-  test 5: Test that the password visibility gets toggled correctly
-  test 6: Test that when the submit button is clicked that there is a loading icon
-*/
-
 describe("Login Page", () => {
   beforeEach(() => render(<Login />, {}));
   test("Login Page renders without error", () => {
@@ -84,5 +75,26 @@ describe("Login Page", () => {
 
     userEvent.click(passwordToggleVisibility);
     expect(passwordField).toHaveAttribute("type", "password");
+  });
+
+  test("correct username and password combination yields storage of access token and location of home page", async () => {
+    const submitButton = screen.getByRole("button", { name: /login/i });
+    const usernameField = screen.getByRole("textbox", { name: /username/i });
+    const [passwordField] = screen.getAllByLabelText(/password/i);
+
+    userEvent.clear(usernameField);
+    userEvent.clear(passwordField);
+    userEvent.type(usernameField, "testuser");
+    userEvent.type(passwordField, "testpassword");
+
+    await waitFor(() => userEvent.click(submitButton));
+
+    const accessTokenExists = sessionStorage.getItem("accessToken");
+    const accessToken =
+      accessTokenExists !== null ? JSON.parse(accessTokenExists) : null;
+
+    expect(accessToken).toBe("mockToken123");
+    const header = await screen.findByRole("heading", { name: "All Posts" });
+    await waitFor(() => expect(header).toBeInTheDocument());
   });
 });

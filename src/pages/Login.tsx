@@ -12,7 +12,6 @@ import IconButton from "../components/common/mui/IconButton";
 import Button from "../components/common/mui/Button";
 import InputAdornment from "../components/common/mui/InputAdornment";
 import CircularProgress from "../components/common/mui/CircularProgess";
-import useSessionStorage from "../hooks/useSessionStorage";
 import useBoolean from "../hooks/useBoolean";
 import authenticationService from "../services/AuthenticationService";
 
@@ -23,15 +22,14 @@ function Login(): JSX.Element {
     setTrue: setLoadingTrue,
     setFalse: setLoadingFalse,
   } = useBoolean(false);
-  const [serverError, setServerError] = useState(null);
+  const [serverError, setServerError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  const { set, remove, get } = useSessionStorage("accessToken");
-  const accessToken = get();
+  const accessToken = sessionStorage.getItem("accessToken");
 
   async function onSubmitForm(values: FieldValues) {
     try {
@@ -45,22 +43,18 @@ function Login(): JSX.Element {
         formValues,
         {},
         (response: AxiosResponse<any, any>) => {
-          if (
-            response.data.data !== null &&
-            response.status >= 200 &&
-            response.status < 400
-          ) {
+          if (response.status >= 200 && response.status < 400) {
             setServerError(null);
-            set(response.data.data);
+            sessionStorage.setItem("accessToken", response.data.data);
             navigate("/", { replace: true });
           }
         }
       );
     } catch (error) {
-      remove();
+      sessionStorage.removeItem("accessToken");
       const err = error as AxiosError;
       if (err.response) {
-        setServerError(err.response.data.error);
+        setServerError("Invalid Credentials!");
       } else {
         console.error(error);
       }
