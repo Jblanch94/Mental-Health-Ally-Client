@@ -30,6 +30,7 @@ function NavMenu(props: NavMenuProps): JSX.Element {
           flexWrap: "wrap",
         }}>
         <Link
+          aria-label='create-post'
           to='/posts/create'
           sx={{
             display: "block",

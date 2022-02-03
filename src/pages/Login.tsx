@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm, FieldValues } from "react-hook-form";
@@ -108,7 +108,10 @@ function Login(): JSX.Element {
             </span>
           )}
 
-          <form onSubmit={handleSubmit(onSubmitForm)}>
+          <form
+            onSubmit={handleSubmit(onSubmitForm)}
+            name='login form'
+            aria-label='login form'>
             <Stack spacing={2}>
               <TextField
                 id='Username'
@@ -122,9 +125,8 @@ function Login(): JSX.Element {
                 {...register("username", { required: true })}
                 error={errors?.username !== undefined}
                 helperText={
-                  errors?.username?.type === "required" && (
-                    <span>Username is required</span>
-                  )
+                  errors?.username?.type === "required" &&
+                  "Username is required"
                 }
               />
 
@@ -134,8 +136,8 @@ function Login(): JSX.Element {
                 size='small'
                 fullWidth
                 label='Password'
-                aria-label='Password'
                 hiddenLabel
+                aria-label='Password'
                 type={showPassword ? "text" : "password"}
                 InputProps={{
                   endAdornment: (
@@ -152,9 +154,8 @@ function Login(): JSX.Element {
                 {...register("password", { required: true })}
                 error={errors?.password !== undefined}
                 helperText={
-                  errors?.password?.type === "required" && (
-                    <span>Password is required</span>
-                  )
+                  errors?.password?.type === "required" &&
+                  "Password is required"
                 }
               />
 
