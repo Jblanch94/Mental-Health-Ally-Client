@@ -57,5 +57,32 @@ describe("Login Page", () => {
     expect(errorText).toBeInTheDocument();
   });
 
-  test("password field is not empty and there is no error text", () => {});
+  test("password field is not empty and there is no error text", async () => {
+    const submitButton = screen.getByRole("button", { name: /login/i });
+
+    const [passwordField] = screen.getAllByLabelText(/password/i);
+    userEvent.clear(passwordField);
+    userEvent.type(passwordField, "Jblanch94!");
+    userEvent.click(submitButton);
+
+    const errorText = await waitFor(() =>
+      screen.queryByText(/Password is required/i)
+    );
+    expect(errorText).not.toBeInTheDocument();
+  });
+
+  test("password field text is visible when clicking on toggle password visibility and it is of type password when clicking on password toggle visibility", () => {
+    const passwordToggleVisibility = screen.getByRole("button", {
+      name: /toggle password visibility/i,
+    });
+    const [passwordField] = screen.getAllByLabelText(/password/i);
+    userEvent.clear(passwordField);
+    userEvent.type(passwordField, "Jblanch94!");
+
+    userEvent.click(passwordToggleVisibility);
+    expect(passwordField).toHaveAttribute("type", "text");
+
+    userEvent.click(passwordToggleVisibility);
+    expect(passwordField).toHaveAttribute("type", "password");
+  });
 });
