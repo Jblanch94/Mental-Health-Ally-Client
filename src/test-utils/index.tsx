@@ -5,18 +5,21 @@ import { ThemeProvider } from "@mui/material";
 
 import theme from "../styles/theme";
 import Home from "../pages/Home";
+import { AuthProvider } from "../contexts/auth-context";
 
 const ProvidersWrapper: FC = (props) => {
   const { children } = props;
 
   return (
     <ThemeProvider theme={theme}>
-      <MemoryRouter>
-        <Routes>
-          <Route path='/' element={<Home />} />
-        </Routes>
-        {children}
-      </MemoryRouter>
+      <AuthProvider>
+        <MemoryRouter>
+          <Routes>
+            <Route path='/' element={<Home />} />
+          </Routes>
+          {children}
+        </MemoryRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 };

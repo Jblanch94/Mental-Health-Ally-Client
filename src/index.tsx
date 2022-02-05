@@ -7,12 +7,15 @@ import "./styles/global.css";
 import App from "./App";
 import theme from "./styles/theme";
 import reportWebVitals from "./reportWebVitals";
+import { AuthProvider } from "./contexts/auth-context";
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AuthProvider>
   </ThemeProvider>,
   document.getElementById("root")
 );
