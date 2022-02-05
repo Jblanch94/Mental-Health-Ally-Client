@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm, FieldValues } from "react-hook-form";
 import { TextField } from "@mui/material";
@@ -12,7 +12,7 @@ import IconButton from "../components/common/mui/IconButton";
 import InputAdornment from "../components/common/mui/InputAdornment";
 import Link from "../components/common/Link";
 import useBoolean from "../hooks/useBoolean";
-import authenticationService from "../services/AuthenticationService";
+import { useAuth } from "../contexts/auth-context";
 
 function Login(): JSX.Element {
   const { toggle: showPasswordToggle, value: showPassword } = useBoolean(false);
@@ -28,7 +28,9 @@ function Login(): JSX.Element {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  const accessToken = sessionStorage.getItem("accessToken");
+  const auth = useAuth();
+
+  console.log(auth);
 
   async function onSubmitForm(values: FieldValues) {
     try {
@@ -37,18 +39,10 @@ function Login(): JSX.Element {
         userName: values.username,
         password: values.password,
       };
-      await authenticationService.login(
-        "/Login",
-        formValues,
-        {},
-        (response: AxiosResponse<any, any>) => {
-          if (response.status >= 200 && response.status < 400) {
-            setServerError(null);
-            sessionStorage.setItem("accessToken", response.data.data);
-            navigate("/", { replace: true });
-          }
-        }
-      );
+      await auth?.login(formValues);
+      setServerError(null);
+      setLoadingFalse();
+      navigate("/", { replace: true });
     } catch (error) {
       sessionStorage.removeItem("accessToken");
       const err = error as AxiosError;
@@ -57,16 +51,15 @@ function Login(): JSX.Element {
       } else {
         console.error(error);
       }
-    } finally {
       setLoadingFalse();
     }
   }
 
   useEffect(() => {
-    if (accessToken != null) {
+    if (auth?.authenticated) {
       navigate("/", { replace: true });
     }
-  }, [accessToken, navigate]);
+  }, [auth?.authenticated, navigate]);
 
   return (
     <CenterForm headingText='Login with Mental Health Ally'>

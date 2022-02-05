@@ -12,7 +12,7 @@ import IconButton from "../components/common/mui/IconButton";
 import ButtonLoadingState from "../components/features/ButtonLoadingState";
 import Link from "../components/common/Link";
 import useBoolean from "../hooks/useBoolean";
-import authService from "../services/AuthenticationService";
+import { useAuth } from "../contexts/auth-context";
 
 function Signup() {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -32,7 +32,7 @@ function Signup() {
   const { value: showPassword, toggle: togglePasswordVisibility } =
     useBoolean(false);
 
-  const accessToken = sessionStorage.getItem("accessToken");
+  const auth = useAuth();
 
   async function onSubmit(data: FieldValues) {
     try {
@@ -42,13 +42,10 @@ function Signup() {
         email: data.email,
         password: data.password,
       };
-      await authService.signup("/Register", formValues, {}, (response) => {
-        if (response.status >= 200 && response.status < 400) {
-          setServerError(null);
-          sessionStorage.setItem("accessToken", response.data.data);
-          navigate("/", { replace: true });
-        }
-      });
+      await auth?.signup(formValues);
+      setServerError(null);
+      setLoadingFalse();
+      navigate("/", { replace: true });
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.error(err);
@@ -56,7 +53,6 @@ function Signup() {
       } else {
         console.error(err);
       }
-    } finally {
       setLoadingFalse();
     }
   }
@@ -67,7 +63,7 @@ function Signup() {
     return null;
   }
 
-  if (accessToken !== null) {
+  if (auth?.authenticated) {
     return <Navigate to='/' replace />;
   }
 
