@@ -7,3 +7,5 @@ function Card(props: CardProps): JSX.Element {
 
   return <MuiCard {...rest}>{children}</MuiCard>;
 }
+
+export default Card;
