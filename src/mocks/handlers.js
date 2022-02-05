@@ -22,7 +22,6 @@ export const handlers = [
   rest.post(
     "https://webapi20211228172142.azurewebsites.net/api/Authentication/Register",
     async (req, res, ctx) => {
-      console.log(req.body);
       const { userName } = req.body;
 
       if (userName === "existinguser") {
