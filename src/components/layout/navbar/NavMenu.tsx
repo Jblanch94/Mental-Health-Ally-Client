@@ -18,7 +18,7 @@ function NavMenu(props: NavMenuProps): JSX.Element {
     content = (
       <>
         <ButtonLink to='/auth/login'>Login</ButtonLink>
-        <ButtonLink to='/auth/register'>Sign Up</ButtonLink>
+        <ButtonLink to='/auth/signup'>Sign Up</ButtonLink>
       </>
     );
   } else {
