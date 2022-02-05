@@ -12,7 +12,6 @@ function CenterForm(props: CenterFormProps): JSX.Element {
   const { children, headingText } = props;
   return (
     <Box
-      id='login-form'
       component='section'
       sx={{
         height: "100vh",

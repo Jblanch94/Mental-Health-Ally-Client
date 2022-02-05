@@ -12,7 +12,7 @@ import IconButton from "../components/common/mui/IconButton";
 import ButtonLoadingState from "../components/features/ButtonLoadingState";
 import Link from "../components/common/Link";
 import useBoolean from "../hooks/useBoolean";
-import authAxios from "../axios/authAxios";
+import authService from "../services/AuthenticationService";
 
 function Signup() {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -37,19 +37,21 @@ function Signup() {
   async function onSubmit(data: FieldValues) {
     try {
       setLoadingTrue();
-      const formValues = {
+      const formValues: FieldValues = {
         userName: data.username,
         email: data.email,
         password: data.password,
       };
-      const response = await authAxios.post("/Register", formValues);
-      if (response.status >= 200 && response.status < 400) {
-        setServerError(null);
-        sessionStorage.setItem("accessToken", response.data.data);
-        navigate("/", { replace: true });
-      }
+      await authService.signup("/Register", formValues, {}, (response) => {
+        if (response.status >= 200 && response.status < 400) {
+          setServerError(null);
+          sessionStorage.setItem("accessToken", response.data.data);
+          navigate("/", { replace: true });
+        }
+      });
     } catch (err) {
       if (axios.isAxiosError(err)) {
+        console.error(err);
         setServerError(err.response?.data.message);
       } else {
         console.error(err);
@@ -95,7 +97,9 @@ function Signup() {
             {...register("username", { required: true })}
             error={errors?.username !== undefined}
             helperText={
-              errors?.username?.type === "required" && "Username is required"
+              errors?.username?.type === "required" && (
+                <span role='alert'>Username is required</span>
+              )
             }
           />
           <TextField
