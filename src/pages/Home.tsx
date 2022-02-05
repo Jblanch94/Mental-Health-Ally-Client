@@ -3,19 +3,14 @@ import CardContent from "../components/common/mui/CardContent";
 import Typography from "../components/common/mui/Typography";
 import Stack from "../components/common/mui/Stack";
 import usePosts from "../hooks/usePosts";
-
-interface Post {
-  id: string;
-  body: string;
-  createdAt: string;
-  title: string;
-  updatedAt: string;
-}
+import { Post } from "../types";
+import useGroups from "../hooks/useGroups";
 
 function Home() {
-  const { posts, error } = usePosts();
-  console.log("posts", posts);
-  console.log("error", error);
+  const { posts, error: postsError } = usePosts();
+  const { groups, error: groupsError } = useGroups();
+  console.log(groups);
+  console.log(groupsError);
 
   const cardPosts = posts.map((post: Post): JSX.Element => {
     return (
@@ -27,12 +22,14 @@ function Home() {
         }}>
         <CardContent>
           <Typography fontSize={14} gutterBottom>
-            g/group - posted by username
+            {`g/${post.group.name} - posted by ${post.user.userName}`}
           </Typography>
           <Typography variant='h3' fontSize={16} gutterBottom>
             {post.title}
           </Typography>
-          <Typography fontSize={14}>256 comments</Typography>
+          <Typography fontSize={14}>{`${post.comments.length} ${
+            post.comments.length === 1 ? "comment" : "comments"
+          }`}</Typography>
         </CardContent>
       </Card>
     );
