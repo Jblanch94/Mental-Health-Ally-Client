@@ -15,6 +15,7 @@ interface AuthProviderProps {
 
 interface AuthContextProps {
   login: (formValues: FieldValues) => Promise<void>;
+  signup: (formValues: FieldValues) => Promise<void>;
   authenticated: boolean;
   accessToken: string | null;
 }
@@ -39,6 +40,20 @@ function AuthProvider(props: AuthProviderProps) {
     });
   }
 
+  async function signup(formValues: FieldValues) {
+    await authService.signup("/Register", formValues, {}, (response) => {
+      if (response.status >= 200 && response.status < 400) {
+        sessionStorage.setItem("accessToken", response.data.data);
+        setAccessToken(response.data.data);
+        setAuthenticated(true);
+      } else {
+        sessionStorage.removeItem("accessToken");
+        setAccessToken(null);
+        setAuthenticated(false);
+      }
+    });
+  }
+
   // obtain access token and store it in memory
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
@@ -47,7 +62,7 @@ function AuthProvider(props: AuthProviderProps) {
   }, [accessToken]);
 
   return (
-    <AuthContext.Provider value={{ login, accessToken, authenticated }}>
+    <AuthContext.Provider value={{ login, signup, accessToken, authenticated }}>
       {children}
     </AuthContext.Provider>
   );
