@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Drawer } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import Card from "../components/common/mui/Card";
 import CardContent from "../components/common/mui/CardContent";
@@ -16,11 +17,15 @@ import useWindowResize from "../hooks/useWindowResize";
 
 function Home() {
   const ref = useRef<HTMLDivElement | null>(null);
+  const drawerContainer = ref?.current?.children[0];
   const { posts, error: postsError } = usePosts();
   const { groups, error: groupsError } = useGroups();
-
-  const drawerContainer = ref?.current?.children[0];
   const { width } = useWindowResize(drawerContainer);
+  const navigate = useNavigate();
+
+  if (postsError || groupsError) {
+    navigate("/500");
+  }
 
   const cardPosts = posts.map((post: Post): JSX.Element => {
     return (
