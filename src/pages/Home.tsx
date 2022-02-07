@@ -8,8 +8,9 @@ import Stack from "../components/common/mui/Stack";
 import List from "../components/common/mui/List";
 import ListItem from "../components/common/mui/ListItem";
 import ListItemText from "../components/common/mui/ListItemText";
+import Link from "../components/common/Link";
 import usePosts from "../hooks/usePosts";
-import { Post } from "../types";
+import { Post, Group } from "../types";
 import useGroups from "../hooks/useGroups";
 import useWindowResize from "../hooks/useWindowResize";
 
@@ -29,8 +30,8 @@ function Home() {
           background: (theme) => theme.primary.main,
           color: (theme) => theme.text.white,
           width: {
-            xs: `calc(100% - ${width}px)`,
-            md: `calc(75% - ${width}px)`,
+            xs: `calc(90% - ${width}px)`,
+            md: `calc(60% - ${width}px)`,
           },
         }}>
         <CardContent>
@@ -47,6 +48,22 @@ function Home() {
       </Card>
     );
   });
+
+  const groupsList = groups.map((group: Group) => {
+    return (
+      <ListItem key={group.id}>
+        <Link
+          to={`/groups/${group.id}`}
+          sx={{
+            "&:hover": { color: (theme) => theme.text.primary },
+            color: (theme) => theme.text.white,
+          }}>
+          <ListItemText primary={group.name} />
+        </Link>
+      </ListItem>
+    );
+  });
+
   return (
     <>
       <h1>All Posts</h1>
@@ -63,21 +80,27 @@ function Home() {
           flexShrink: 0,
           borderRadius: (theme) => theme.spacing(2),
           [`& .MuiDrawer-paper`]: {
-            width: { xs: "min-content", md: "fit-content" },
+            width: { xs: "fit-content", md: "fit-content" },
             boxSizing: "border-box",
             px: (theme) => theme.spacing(2),
             height: "min-content",
-            borderRadius: 1,
+            borderTopLeftRadius: (theme) => theme.spacing(0.5),
+            borderBottomLeftRadius: (theme) => theme.spacing(0.5),
             top: "15%",
+            pb: (theme) => theme.spacing(2),
+            backgroundColor: (theme) => theme.primary.main,
+            color: (theme) => theme.text.white,
           },
         }}>
-        <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        <List>{groupsList}</List>
+        <Link
+          to='/groups'
+          sx={{
+            "&:hover": { color: (theme) => theme.text.primary },
+            color: (theme) => theme.text.white,
+          }}>
+          View All Groups
+        </Link>
       </Drawer>
     </>
   );
