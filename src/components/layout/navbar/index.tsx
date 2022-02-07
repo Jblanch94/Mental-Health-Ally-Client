@@ -27,7 +27,10 @@ const Navbar = (props: NavbarProps): JSX.Element => {
   return (
     <AppBar
       position='fixed'
-      sx={{ backgroundColor: (theme) => theme.primary.main }}>
+      sx={{
+        backgroundColor: (theme) => theme.primary.main,
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+      }}>
       <CssBaseline />
       <Toolbar
         component='nav'
