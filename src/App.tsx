@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Layout from "./components/layout";
+import ServerError from "./pages/500";
+import NotFound from "./pages/404";
 
 const App: FunctionComponent<{}> = () => {
   return (
@@ -16,6 +18,8 @@ const App: FunctionComponent<{}> = () => {
           <Route path='/auth/login' element={<Login />} />
           <Route path='/auth/signup' element={<Signup />} />
         </Route>
+        <Route path='/500' element={<ServerError />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </Box>
   );
