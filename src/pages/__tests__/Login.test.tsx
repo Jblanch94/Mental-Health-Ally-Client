@@ -1,10 +1,10 @@
 import { render, screen, waitFor } from "../../test-utils";
 import userEvent from "@testing-library/user-event";
 
-import Login from "../Login";
+import App from "../../App";
 
 describe("Login Page", () => {
-  beforeEach(() => render(<Login />, {}));
+  beforeEach(() => render(<App />, { initialRoutes: ["/auth/login"] }));
   test("Login Page renders without error", () => {
     const loginForm = screen.getByRole("form", { name: /login form/i });
 

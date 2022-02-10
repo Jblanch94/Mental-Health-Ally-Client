@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 function useWindowResize(ref: Element | undefined) {
-  console.log(ref);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 

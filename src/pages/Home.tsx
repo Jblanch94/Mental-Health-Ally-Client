@@ -76,37 +76,39 @@ function Home() {
         {cardPosts}
       </Stack>
 
-      <Drawer
-        variant='permanent'
-        anchor='right'
-        ref={ref}
-        sx={{
-          width: { xs: "min-content", md: "fit-content" },
-          flexShrink: 0,
-          borderRadius: (theme) => theme.spacing(2),
-          [`& .MuiDrawer-paper`]: {
-            width: { xs: "fit-content", md: "fit-content" },
-            boxSizing: "border-box",
-            px: (theme) => theme.spacing(2),
-            height: "min-content",
-            borderTopLeftRadius: (theme) => theme.spacing(0.5),
-            borderBottomLeftRadius: (theme) => theme.spacing(0.5),
-            top: "15%",
-            pb: (theme) => theme.spacing(2),
-            backgroundColor: (theme) => theme.primary.main,
-            color: (theme) => theme.text.white,
-          },
-        }}>
-        <List>{groupsList}</List>
-        <Link
-          to='/groups'
+      <aside>
+        <Drawer
+          variant='permanent'
+          anchor='right'
+          ref={ref}
           sx={{
-            "&:hover": { color: (theme) => theme.text.primary },
-            color: (theme) => theme.text.white,
+            width: { xs: "min-content", md: "fit-content" },
+            flexShrink: 0,
+            borderRadius: (theme) => theme.spacing(2),
+            [`& .MuiDrawer-paper`]: {
+              width: { xs: "fit-content", md: "fit-content" },
+              boxSizing: "border-box",
+              px: (theme) => theme.spacing(2),
+              height: "min-content",
+              borderTopLeftRadius: (theme) => theme.spacing(0.5),
+              borderBottomLeftRadius: (theme) => theme.spacing(0.5),
+              top: "15%",
+              pb: (theme) => theme.spacing(2),
+              backgroundColor: (theme) => theme.primary.main,
+              color: (theme) => theme.text.white,
+            },
           }}>
-          View All Groups
-        </Link>
-      </Drawer>
+          <List>{groupsList}</List>
+          <Link
+            to='/groups'
+            sx={{
+              "&:hover": { color: (theme) => theme.text.primary },
+              color: (theme) => theme.text.white,
+            }}>
+            View All Groups
+          </Link>
+        </Drawer>
+      </aside>
     </>
   );
 }

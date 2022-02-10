@@ -8,9 +8,12 @@ function usePosts() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchPosts = async () => {
       try {
-        const response = await postsAxios.get("/");
+        const response = await postsAxios.get("/", {
+          cancelToken: source.token,
+        });
         if (response.status >= 200 && response.status < 400) {
           setPosts(response.data.data);
         }
@@ -24,6 +27,8 @@ function usePosts() {
     };
 
     fetchPosts();
+
+    return () => source.cancel();
   }, []);
 
   return { posts, error };

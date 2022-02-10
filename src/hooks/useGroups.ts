@@ -8,9 +8,12 @@ function useGroups() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchGroups = async () => {
       try {
-        const response = await groupsAxios.get("/");
+        const response = await groupsAxios.get("/", {
+          cancelToken: source.token,
+        });
         if (response.status >= 200 && response.status < 400) {
           setGroups(response.data.data);
         }
@@ -24,6 +27,8 @@ function useGroups() {
     };
 
     fetchGroups();
+
+    return () => source.cancel();
   }, []);
 
   return { groups, error };

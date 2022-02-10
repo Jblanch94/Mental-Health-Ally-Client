@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../layout/navbar";
 import { render, screen } from "../../test-utils";
 

@@ -36,4 +36,41 @@ export const handlers = [
       }
     }
   ),
+
+  rest.get(
+    "https://webapi20211228172142.azurewebsites.net/api/Posts/",
+    async (req, res, ctx) => {
+      const posts = [
+        {
+          id: 1,
+          body: "Body 1",
+          createdAt: "2021-8-20",
+          title: "Title 1",
+          updatedAt: "2021-8-20",
+          user: {
+            userName: "test-user",
+          },
+          comments: [],
+          group: {
+            id: 1,
+            name: "Misc",
+            createdAt: "2021-8-20",
+          },
+        },
+      ];
+
+      const response = await res(ctx.status(200), ctx.json({ data: posts }));
+
+      return response;
+    }
+  ),
+
+  rest.get(
+    "https://webapi20211228172142.azurewebsites.net/api/Groups/",
+    async (req, res, ctx) => {
+      const groups = [{ id: 1, name: "Misc", createdAt: "2021-8-20" }];
+
+      return await res(ctx.status(200), ctx.json({ data: groups }));
+    }
+  ),
 ];

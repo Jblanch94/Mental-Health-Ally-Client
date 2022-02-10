@@ -1,10 +1,10 @@
 import userEvent from "@testing-library/user-event";
 
 import { screen, render, waitFor } from "../../test-utils";
-import Signup from "../Signup";
+import App from "../../App";
 
 describe("Sign Up Page", () => {
-  beforeEach(() => render(<Signup />, {}));
+  beforeEach(() => render(<App />, { initialRoutes: ["/auth/signup"] }));
   test("renders without error", () => {
     const signupForm = screen.getByRole("form", { name: /signup form/i });
     expect(signupForm).toBeInTheDocument();
@@ -67,7 +67,6 @@ describe("Sign Up Page", () => {
     userEvent.type(email, "123@example.com");
     userEvent.type(password, "password123");
     await waitFor(() => userEvent.click(submitButton));
-    // userEvent.click(submitButton);
 
     const serverErrorText = await screen.findByText(/user already exists/i);
     expect(serverErrorText).toBeInTheDocument();
@@ -85,7 +84,7 @@ describe("Sign Up Page", () => {
     await waitFor(() => userEvent.click(submitButton));
 
     expect(sessionStorage.getItem("accessToken")).not.toBeNull();
-    const heading = screen.getByRole("heading", { name: "All Posts" });
+    const heading = await screen.findByRole("heading", { name: "All Posts" });
     expect(heading).toBeInTheDocument();
   });
 });
