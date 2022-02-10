@@ -29,28 +29,29 @@ function Home() {
 
   const cardPosts = posts.map((post: Post): JSX.Element => {
     return (
-      <Card
-        key={post.id}
-        sx={{
-          background: (theme) => theme.primary.main,
-          color: (theme) => theme.text.white,
-          width: {
-            xs: `calc(90% - ${width}px)`,
-            md: `calc(60% - ${width}px)`,
-          },
-        }}>
-        <CardContent>
-          <Typography fontSize={14} gutterBottom>
-            {`g/${post.group.name} - posted by ${post.user.userName}`}
-          </Typography>
-          <Typography variant='h3' fontSize={16} gutterBottom>
-            {post.title}
-          </Typography>
-          <Typography fontSize={14}>{`${post.comments.length} ${
-            post.comments.length === 1 ? "comment" : "comments"
-          }`}</Typography>
-        </CardContent>
-      </Card>
+      <article id='card' key={post.id}>
+        <Card
+          sx={{
+            background: (theme) => theme.primary.main,
+            color: (theme) => theme.text.white,
+            width: {
+              xs: `calc(90% - ${width}px)`,
+              md: `calc(60% - ${width}px)`,
+            },
+          }}>
+          <CardContent>
+            <Typography fontSize={14} gutterBottom>
+              {`g/${post.group.name} - posted by ${post.user.userName}`}
+            </Typography>
+            <Typography variant='h3' fontSize={16} gutterBottom>
+              {post.title}
+            </Typography>
+            <Typography fontSize={14}>{`${post.comments.length} ${
+              post.comments.length === 1 ? "comment" : "comments"
+            }`}</Typography>
+          </CardContent>
+        </Card>
+      </article>
     );
   });
 
