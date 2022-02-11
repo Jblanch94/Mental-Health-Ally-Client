@@ -9,6 +9,7 @@ function usePosts() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     const source = axios.CancelToken.source();
     const fetchPosts = async () => {
       try {
@@ -25,13 +26,18 @@ function usePosts() {
           console.error(err);
         }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchPosts();
 
-    return () => source.cancel();
+    return () => {
+      source.cancel();
+      isMounted = false;
+    };
   }, []);
 
   return { posts, error, loading };

@@ -11,7 +11,7 @@ import useWindowResize from "../hooks/useWindowResize";
 import PostsList from "../components/features/Posts/PostsList";
 import GroupsList from "../components/features/Groups/GroupsList";
 
-// TODO: REFACTOR INTO SEPARATE COMPONENTS
+// TODO: IMPLEMENT AN INFINITE LOAD, BUT FIRST I NEED TO IMPLEMENT A CREATE POST PAGE
 function Home() {
   const ref = useRef<HTMLDivElement | null>(null);
   const drawerContainer = ref?.current?.children[0];
@@ -26,7 +26,7 @@ function Home() {
 
   const postsSkeletonArray = Array(4).fill("");
   const groupsSkeletonArray = Array(5).fill("");
-  const postsSkeleton = postsSkeletonArray.map((item, index) => {
+  const postsSkeleton = postsSkeletonArray.map((_, index) => {
     return (
       <Skeleton
         data-testid='post-skeleton'
@@ -43,7 +43,7 @@ function Home() {
     );
   });
 
-  const groupsSkeleton = groupsSkeletonArray.map((item, index) => {
+  const groupsSkeleton = groupsSkeletonArray.map((_, index) => {
     return <Skeleton data-testid='group-skeleton' variant='text' key={index} />;
   });
 

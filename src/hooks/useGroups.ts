@@ -9,6 +9,7 @@ function useGroups() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     const source = axios.CancelToken.source();
     const fetchGroups = async () => {
       try {
@@ -25,13 +26,18 @@ function useGroups() {
           console.error(err);
         }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchGroups();
 
-    return () => source.cancel();
+    return () => {
+      isMounted = false;
+      source.cancel();
+    };
   }, []);
 
   return { groups, error, loading };
