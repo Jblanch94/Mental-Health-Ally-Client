@@ -6,6 +6,7 @@ import groupsAxios from "../axios/groupsAxios";
 function useGroups() {
   const [groups, setGroups] = useState([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -23,6 +24,8 @@ function useGroups() {
         } else {
           console.error(err);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -31,7 +34,7 @@ function useGroups() {
     return () => source.cancel();
   }, []);
 
-  return { groups, error };
+  return { groups, error, loading };
 }
 
 export default useGroups;

@@ -1,5 +1,5 @@
 import App from "../../App";
-import { render, screen, findAllByRole } from "../../test-utils/";
+import { render, screen, findAllByRole, waitFor } from "../../test-utils/";
 
 describe("Home Page", () => {
   test("Home Page renders without error", async () => {
@@ -25,5 +25,19 @@ describe("Home Page", () => {
     const main = screen.getByRole("main");
     const posts = await findAllByRole(main, "article");
     expect(posts.length).toBe(1);
+  });
+
+  test("Home Page renders a Skeleton for the posts and groups", async () => {
+    render(<App />, { initialRoutes: ["/"] });
+    const postsSkeleton = screen.getAllByTestId("post-skeleton");
+    expect(postsSkeleton.length).toBe(4);
+
+    const groupsSkeleton = screen.getAllByTestId("group-skeleton");
+    expect(groupsSkeleton.length).toBe(5);
+
+    await waitFor(() => {
+      expect(screen.queryAllByTestId("post-skeleton").length).toBe(0);
+      expect(screen.queryAllByTestId("group-skeleton").length).toBe(0);
+    });
   });
 });

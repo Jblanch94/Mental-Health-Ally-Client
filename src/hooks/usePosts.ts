@@ -6,6 +6,7 @@ import postsAxios from "../axios/postsAxios";
 function usePosts() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -23,6 +24,8 @@ function usePosts() {
         } else {
           console.error(err);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -31,7 +34,7 @@ function usePosts() {
     return () => source.cancel();
   }, []);
 
-  return { posts, error };
+  return { posts, error, loading };
 }
 
 export default usePosts;

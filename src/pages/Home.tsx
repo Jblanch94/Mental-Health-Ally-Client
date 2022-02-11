@@ -1,25 +1,22 @@
 import { useRef } from "react";
-import { Drawer } from "@mui/material";
+import { Drawer, Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import Card from "../components/common/mui/Card";
-import CardContent from "../components/common/mui/CardContent";
-import Typography from "../components/common/mui/Typography";
 import Stack from "../components/common/mui/Stack";
 import List from "../components/common/mui/List";
-import ListItem from "../components/common/mui/ListItem";
-import ListItemText from "../components/common/mui/ListItemText";
 import Link from "../components/common/Link";
 import usePosts from "../hooks/usePosts";
-import { Post, Group } from "../types";
 import useGroups from "../hooks/useGroups";
 import useWindowResize from "../hooks/useWindowResize";
+import PostsList from "../components/features/Posts/PostsList";
+import GroupsList from "../components/features/Groups/GroupsList";
 
+// TODO: REFACTOR INTO SEPARATE COMPONENTS
 function Home() {
   const ref = useRef<HTMLDivElement | null>(null);
   const drawerContainer = ref?.current?.children[0];
-  const { posts, error: postsError } = usePosts();
-  const { groups, error: groupsError } = useGroups();
+  const { posts, error: postsError, loading: postsLoading } = usePosts();
+  const { groups, error: groupsError, loading: groupsLoading } = useGroups();
   const { width } = useWindowResize(drawerContainer);
   const navigate = useNavigate();
 
@@ -27,54 +24,38 @@ function Home() {
     navigate("/500");
   }
 
-  const cardPosts = posts.map((post: Post): JSX.Element => {
+  const postsSkeletonArray = Array(4).fill("");
+  const groupsSkeletonArray = Array(5).fill("");
+  const postsSkeleton = postsSkeletonArray.map((item, index) => {
     return (
-      <article id='card' key={post.id}>
-        <Card
-          sx={{
-            background: (theme) => theme.primary.main,
-            color: (theme) => theme.text.white,
-            width: {
-              xs: `calc(90% - ${width}px)`,
-              md: `calc(60% - ${width}px)`,
-            },
-          }}>
-          <CardContent>
-            <Typography fontSize={14} gutterBottom>
-              {`g/${post.group.name} - posted by ${post.user.userName}`}
-            </Typography>
-            <Typography variant='h3' fontSize={16} gutterBottom>
-              {post.title}
-            </Typography>
-            <Typography fontSize={14}>{`${post.comments.length} ${
-              post.comments.length === 1 ? "comment" : "comments"
-            }`}</Typography>
-          </CardContent>
-        </Card>
-      </article>
+      <Skeleton
+        data-testid='post-skeleton'
+        key={index}
+        variant='rectangular'
+        sx={{
+          width: {
+            xs: `calc(90% - ${width}px)`,
+            md: `calc(60% - ${width}px)`,
+          },
+          height: 110,
+        }}
+      />
     );
   });
 
-  const groupsList = groups.map((group: Group) => {
-    return (
-      <ListItem key={group.id}>
-        <Link
-          to={`/groups/${group.id}`}
-          sx={{
-            "&:hover": { color: (theme) => theme.text.primary },
-            color: (theme) => theme.text.white,
-          }}>
-          <ListItemText primary={group.name} />
-        </Link>
-      </ListItem>
-    );
+  const groupsSkeleton = groupsSkeletonArray.map((item, index) => {
+    return <Skeleton data-testid='group-skeleton' variant='text' key={index} />;
   });
 
   return (
     <>
       <h1>All Posts</h1>
       <Stack mx={2} spacing={2} alignItems={{ md: "center" }}>
-        {cardPosts}
+        {postsLoading ? (
+          postsSkeleton
+        ) : (
+          <PostsList posts={posts} width={width} />
+        )}
       </Stack>
 
       <aside>
@@ -99,7 +80,9 @@ function Home() {
               color: (theme) => theme.text.white,
             },
           }}>
-          <List>{groupsList}</List>
+          <List>
+            {groupsLoading ? groupsSkeleton : <GroupsList groups={groups} />}
+          </List>
           <Link
             to='/groups'
             sx={{
