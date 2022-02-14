@@ -30,8 +30,6 @@ function Login(): JSX.Element {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  console.log(auth);
-
   async function onSubmitForm(values: FieldValues) {
     try {
       setLoadingTrue();

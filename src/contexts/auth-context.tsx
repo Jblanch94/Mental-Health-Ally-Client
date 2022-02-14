@@ -11,6 +11,7 @@ import authService from "../services/AuthenticationService";
 
 interface AuthProviderProps {
   children: ReactNode;
+  authenticated?: boolean;
 }
 
 interface AuthContextProps {
@@ -22,19 +23,18 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps | null>(null);
 
-function AuthProvider(props: AuthProviderProps) {
-  const { children } = props;
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [authenticated, setAuthenticated] = useState(false);
+function AuthProvider({ children, authenticated = false }: AuthProviderProps) {
+  const [token, setToken] = useState<string | null>(null);
+  const [isAuthenticated, setAuthenticated] = useState(authenticated);
 
   async function login(formValues: FieldValues) {
     await authService.login("/Login", formValues, {}, (response) => {
       if (response.status >= 200 && response.status < 400) {
         sessionStorage.setItem("accessToken", response.data.data);
-        setAccessToken(response.data.data);
+        setToken(response.data.data);
         setAuthenticated(true);
       } else {
-        setAccessToken(null);
+        setToken(null);
         setAuthenticated(false);
       }
     });
@@ -44,11 +44,11 @@ function AuthProvider(props: AuthProviderProps) {
     await authService.signup("/Register", formValues, {}, (response) => {
       if (response.status >= 200 && response.status < 400) {
         sessionStorage.setItem("accessToken", response.data.data);
-        setAccessToken(response.data.data);
+        setToken(response.data.data);
         setAuthenticated(true);
       } else {
         sessionStorage.removeItem("accessToken");
-        setAccessToken(null);
+        setToken(null);
         setAuthenticated(false);
       }
     });
@@ -56,13 +56,19 @@ function AuthProvider(props: AuthProviderProps) {
 
   // obtain access token and store it in memory
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
-    setAccessToken(token);
+    const accessToken = sessionStorage.getItem("accessToken");
+    setToken(accessToken);
     setAuthenticated(accessToken !== null);
-  }, [accessToken]);
+  }, [token, authenticated]);
 
   return (
-    <AuthContext.Provider value={{ login, signup, accessToken, authenticated }}>
+    <AuthContext.Provider
+      value={{
+        login,
+        signup,
+        accessToken: token,
+        authenticated: isAuthenticated,
+      }}>
       {children}
     </AuthContext.Provider>
   );
