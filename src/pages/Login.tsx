@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm, FieldValues } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -13,6 +13,10 @@ import InputAdornment from "../components/common/mui/InputAdornment";
 import Link from "../components/common/Link";
 import useBoolean from "../hooks/useBoolean";
 import { useAuth } from "../contexts/auth-context";
+
+interface LocationState {
+  pathname: string;
+}
 
 function Login(): JSX.Element {
   const { toggle: showPasswordToggle, value: showPassword } = useBoolean(false);
@@ -28,7 +32,9 @@ function Login(): JSX.Element {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const location = useLocation();
   const auth = useAuth();
+  const from = location.state as LocationState;
 
   async function onSubmitForm(values: FieldValues) {
     try {
@@ -40,7 +46,7 @@ function Login(): JSX.Element {
       await auth?.login(formValues);
       setServerError(null);
       setLoadingFalse();
-      navigate("/", { replace: true });
+      navigate(from?.pathname ?? "/", { replace: true });
     } catch (error) {
       sessionStorage.removeItem("accessToken");
       const err = error as AxiosError;

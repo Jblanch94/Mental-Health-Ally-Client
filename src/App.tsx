@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 import Layout from "./components/layout";
+import RequireAuth from "./components/features/RequireAuth";
 import ServerError from "./pages/500";
 import NotFound from "./pages/404";
 
@@ -22,7 +23,14 @@ const App: FunctionComponent<{}> = () => {
           </Route>
 
           <Route path='posts'>
-            <Route path='create' element={<CreatePost />} />
+            <Route
+              path='create'
+              element={
+                <RequireAuth>
+                  <CreatePost />
+                </RequireAuth>
+              }
+            />
           </Route>
         </Route>
         <Route path='/500' element={<ServerError />} />

@@ -19,6 +19,7 @@ function CenterForm(props: CenterFormProps): JSX.Element {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        mt: (theme) => theme.spacing(3),
       }}>
       <Box
         sx={{

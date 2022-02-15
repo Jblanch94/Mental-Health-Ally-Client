@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm, FieldValues } from "react-hook-form";
+import { useForm, FieldValues, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import axios from "axios";
+import MDEditor from "@uiw/react-md-editor";
 
 import CenterForm from "../components/features/CenterForm";
 import Stack from "../components/common/mui/Stack";
@@ -12,34 +13,28 @@ import MenuItem from "../components/common/mui/MenuItem";
 import InputLabel from "../components/common/mui/InputLabel";
 import Select from "../components/common/mui/Select";
 import ButtonLoadingState from "../components/features/ButtonLoadingState";
-import { SelectChangeEvent } from "@mui/material";
 import { Group } from "../types";
 import useGroups from "../hooks/useGroups";
-import { useAuth } from "../contexts/auth-context";
 import postService from "../services/PostService";
 
 // TODO: NEED TO REFACTOR, I ALSO WANT TO MAKE A REUSABLE REQUIRE AUTH COMPONENT TO WRAP COMPONENTS THAT NEED AUTH
-//TODO: STILL NEED TO DO TESTING
 function CreatePost() {
-  const [body, setBody] = useState<string | undefined>("");
-  const [groupId, setGroupId] = useState<unknown>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const { groups } = useGroups();
-  const auth = useAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm();
   const navigate = useNavigate();
 
   async function onSubmit(data: FieldValues) {
     try {
       setLoading(true);
-      const formData = { ...data, body, groupId };
-      await postService.create(formData);
+      await postService.create(data);
       setError(null);
       navigate("/");
     } catch (err) {
@@ -53,10 +48,6 @@ function CreatePost() {
     }
   }
 
-  function handleChange(event: SelectChangeEvent<unknown>) {
-    setGroupId(event.target.value);
-  }
-
   const selectGroups = groups.map((group: Group) => {
     return (
       <MenuItem key={group.id} value={group.id} data-testid='menu-option'>
@@ -64,13 +55,6 @@ function CreatePost() {
       </MenuItem>
     );
   });
-
-  // check authentication status on render and if user is not authenticated then re-direct
-  useEffect(() => {
-    if (!auth?.authenticated) {
-      navigate("/", { replace: true });
-    }
-  }, [auth?.authenticated, navigate]);
 
   return (
     <CenterForm headingText='Create Post'>
@@ -95,24 +79,65 @@ function CreatePost() {
               )
             }
           />
+          <FormControl error={errors?.body !== undefined}>
+            <Controller
+              control={control}
+              name='body'
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <MDEditor
+                  value={value}
+                  visiableDragbar={false}
+                  preview='edit'
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  maxHeight={200}
+                  style={{
+                    border:
+                      errors?.body !== undefined ? "1px solid red" : "inheirt",
+                  }}
+                />
+              )}
+            />
+            <FormHelperText>
+              {errors?.body?.type === "required" && (
+                <span role='alert' style={{ color: "red" }}>
+                  Body is required
+                </span>
+              )}
+            </FormHelperText>
+          </FormControl>
+
           <FormControl
             error={errors?.group !== undefined}
             data-testid='form-control'>
             <InputLabel id='group' htmlFor='group'>
               Group
             </InputLabel>
-            <Select
-              id='group'
-              labelId='group'
-              label='Group'
-              value={groupId}
-              {...register("group", { required: true })}
-              onChange={handleChange}>
-              {selectGroups}
-            </Select>
+            <Controller
+              control={control}
+              name='group'
+              rules={{ required: true }}
+              defaultValue=''
+              render={({ field: { onChange, onBlur, value, ref } }) => (
+                <Select
+                  id='group'
+                  labelId='group'
+                  label='Group'
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  inputRef={ref}>
+                  {selectGroups}
+                </Select>
+              )}
+            />
+
             <FormHelperText>
               {errors?.group?.type === "required" && (
-                <span role='alert'>Group is required</span>
+                <span role='alert' style={{ color: "red" }}>
+                  Group is required
+                </span>
               )}
             </FormHelperText>
           </FormControl>

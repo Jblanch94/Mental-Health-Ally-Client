@@ -5,7 +5,7 @@ import postsAxios from "../axios/postsAxios";
 class PostService {
   async create(formData: FieldValues) {
     const response = await postsAxios.post(
-      `/Group/${formData.groupId}`,
+      `/Group/${formData.group}`,
       formData,
       {
         headers: {
