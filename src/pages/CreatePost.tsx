@@ -79,7 +79,9 @@ function CreatePost() {
               )
             }
           />
-          <FormControl error={errors?.body !== undefined}>
+          <FormControl
+            error={errors?.body !== undefined}
+            data-testid='body-container'>
             <Controller
               control={control}
               name='body'

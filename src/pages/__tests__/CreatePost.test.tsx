@@ -34,6 +34,10 @@ describe("Create Post Page", () => {
     const titleErrorText = await findByRole(titleContainer, "alert");
     expect(titleErrorText.textContent).toBe("Title is required");
 
+    const bodyContainer = screen.getByTestId("body-container");
+    const bodyErrorText = await findByRole(bodyContainer, "alert");
+    expect(bodyErrorText.textContent).toBe("Body is required");
+
     const groupContainer = screen.getByTestId("form-control");
     const groupErrorText = await findByRole(groupContainer, "alert");
     expect(groupErrorText.textContent).toBe("Group is required");
