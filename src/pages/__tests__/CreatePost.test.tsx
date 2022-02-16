@@ -54,12 +54,15 @@ describe("Create Post Page", () => {
     const submitButton = screen.getByRole("button", { name: /create post/i });
     const title = screen.getByRole("textbox", { name: /title/i });
     userEvent.type(title, "Title 1");
+
     const body = screen.getByRole("textbox", { name: "" });
     userEvent.type(body, "body1");
+
     const groupButton = screen.getByRole("button", { name: /group/i });
     userEvent.click(groupButton);
     const options = await screen.findAllByRole("option");
     const selectedOption = options[0];
+
     userEvent.click(selectedOption);
 
     userEvent.click(submitButton);

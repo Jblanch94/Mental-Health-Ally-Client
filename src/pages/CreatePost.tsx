@@ -9,15 +9,15 @@ import MDEditor from "@uiw/react-md-editor";
 
 import CenterForm from "../components/features/CenterForm";
 import Stack from "../components/common/mui/Stack";
-import MenuItem from "../components/common/mui/MenuItem";
 import InputLabel from "../components/common/mui/InputLabel";
+import MenuItem from "../components/common/mui/MenuItem";
 import Select from "../components/common/mui/Select";
 import ButtonLoadingState from "../components/features/ButtonLoadingState";
-import { Group } from "../types";
 import useGroups from "../hooks/useGroups";
 import postService from "../services/PostService";
+import ErrorText from "../components/common/ErrorText";
+import { Group } from "../types";
 
-// TODO: NEED TO REFACTOR, I ALSO WANT TO MAKE A REUSABLE REQUIRE AUTH COMPONENT TO WRAP COMPONENTS THAT NEED AUTH
 function CreatePost() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,14 +48,6 @@ function CreatePost() {
     }
   }
 
-  const selectGroups = groups.map((group: Group) => {
-    return (
-      <MenuItem key={group.id} value={group.id} data-testid='menu-option'>
-        {group.name}
-      </MenuItem>
-    );
-  });
-
   return (
     <CenterForm headingText='Create Post'>
       {error && <span role='alert'>{error}</span>}
@@ -75,7 +67,7 @@ function CreatePost() {
             error={errors?.title !== undefined}
             helperText={
               errors?.title?.type === "required" && (
-                <span role='alert'>Title is required</span>
+                <ErrorText text='Title is required' />
               )
             }
           />
@@ -106,9 +98,7 @@ function CreatePost() {
             />
             <FormHelperText>
               {errors?.body?.type === "required" && (
-                <span role='alert' style={{ color: "red" }}>
-                  Body is required
-                </span>
+                <ErrorText text='Body is required' />
               )}
             </FormHelperText>
           </FormControl>
@@ -133,16 +123,18 @@ function CreatePost() {
                   onBlur={onBlur}
                   value={value}
                   inputRef={ref}>
-                  {selectGroups}
+                  {groups.map((g: Group) => (
+                    <MenuItem key={g.id} value={g.id}>
+                      {g.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               )}
             />
 
             <FormHelperText>
               {errors?.group?.type === "required" && (
-                <span role='alert' style={{ color: "red" }}>
-                  Group is required
-                </span>
+                <ErrorText text='Group is required' />
               )}
             </FormHelperText>
           </FormControl>
