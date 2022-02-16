@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
+import CreateGroup from "./pages/CreateGroup";
 import Layout from "./components/layout";
 import RequireAuth from "./components/features/RequireAuth";
 import ServerError from "./pages/500";
@@ -31,6 +32,9 @@ const App: FunctionComponent<{}> = () => {
                 </RequireAuth>
               }
             />
+          </Route>
+          <Route path='groups'>
+            <Route path='create' element={<CreateGroup />} />
           </Route>
         </Route>
         <Route path='/500' element={<ServerError />} />
