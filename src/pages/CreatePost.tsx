@@ -84,14 +84,17 @@ function CreatePost() {
               control={control}
               name='body'
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value } }) => (
+              render={({ field: { onChange, onBlur, value, ref } }) => (
                 <MDEditor
                   value={value}
+                  ref={ref}
                   visiableDragbar={false}
                   preview='edit'
                   onChange={onChange}
                   onBlur={onBlur}
                   maxHeight={200}
+                  id='body'
+                  data-testid='body'
                   style={{
                     border:
                       errors?.body !== undefined ? "1px solid red" : "inheirt",
