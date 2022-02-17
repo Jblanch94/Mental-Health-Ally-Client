@@ -14,7 +14,6 @@ export interface GroupValues {
   name: string;
 }
 
-// TODO: NEED TO PROVIDE LINK TO TAKE USER TO CREATE A GROUP AND NEED TO WRAP CREATE GROUP PAGE IN REQUIRE AUTH COMPONENT
 function CreateGroup(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -47,6 +46,7 @@ function CreateGroup(): JSX.Element {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
           <TextField
+            data-testid='name'
             id='name'
             variant='outlined'
             size='small'

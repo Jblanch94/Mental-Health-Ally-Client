@@ -7,6 +7,7 @@ import { AuthProvider } from "../contexts/auth-context";
 
 const ProvidersWrapper = (props) => {
   const { children, initialRoutes, authProviderProps } = props;
+  console.log("authProviderProps", authProviderProps);
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider authenticated={authProviderProps.authenticated}>
@@ -21,9 +22,10 @@ const customRender = (ui, options) => {
     options && options.initialRoutes ? options.initialRoutes : ["/"];
   const authProviderProps = {
     authenticated:
-      options && options.authProviderProps?.authenticated
-        ? options.authProviderProps?.authenticated
+      options && options.authProviderProps?.authenticated !== undefined
+        ? options.authProviderProps.authenticated
         : false,
+
     accessToken:
       options && options.accessToken !== null ? options.accessToken : null,
   };

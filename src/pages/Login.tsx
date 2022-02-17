@@ -61,9 +61,9 @@ function Login(): JSX.Element {
 
   useEffect(() => {
     if (auth?.authenticated) {
-      navigate("/", { replace: true });
+      navigate(from?.pathname ?? "/", { replace: true });
     }
-  }, [auth?.authenticated, navigate]);
+  }, [auth?.authenticated, from?.pathname, navigate]);
 
   return (
     <CenterForm headingText='Login with Mental Health Ally'>

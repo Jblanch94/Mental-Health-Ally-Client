@@ -91,6 +91,15 @@ function Home() {
             }}>
             View All Groups
           </Link>
+          <Link
+            to='/groups/create'
+            sx={{
+              "&:hover": { color: (theme) => theme.text.primary },
+              color: (theme) => theme.text.white,
+              mt: (theme) => theme.spacing(2),
+            }}>
+            Create Group
+          </Link>
         </Drawer>
       </aside>
     </>

@@ -27,6 +27,8 @@ function AuthProvider({ children, authenticated = false }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
   const [isAuthenticated, setAuthenticated] = useState(authenticated);
 
+  console.log(authenticated);
+
   async function login(formValues: FieldValues) {
     await authService.login("/Login", formValues, {}, (response) => {
       if (response.status >= 200 && response.status < 400) {

@@ -15,7 +15,6 @@ function RequireAuth(props: RequireAuthProps) {
 
   useEffect(() => {
     if (!auth?.authenticated) {
-      // run some code
       navigate("/auth/login", { replace: true, state: location });
     }
   }, [auth?.authenticated, location, navigate]);

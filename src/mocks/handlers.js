@@ -88,4 +88,17 @@ export const handlers = [
       return res(ctx.status(201), ctx.json({ data: post }));
     }
   ),
+
+  rest.post(
+    "https://webapi20211228172142.azurewebsites.net/api/Groups",
+    (req, res, ctx) => {
+      const group = {
+        id: 1,
+        name: req.body.name,
+        createdAt: "2021-8-20",
+      };
+
+      return res(ctx.status(201), ctx.json({ data: group }));
+    }
+  ),
 ];

@@ -34,7 +34,14 @@ const App: FunctionComponent<{}> = () => {
             />
           </Route>
           <Route path='groups'>
-            <Route path='create' element={<CreateGroup />} />
+            <Route
+              path='create'
+              element={
+                <RequireAuth>
+                  <CreateGroup />
+                </RequireAuth>
+              }
+            />
           </Route>
         </Route>
         <Route path='/500' element={<ServerError />} />
