@@ -5,17 +5,24 @@ import { useNavigate } from "react-router-dom";
 import Stack from "../components/common/mui/Stack";
 import List from "../components/common/mui/List";
 import Link from "../components/common/Link";
+import Button from "../components/common/mui/Button";
 import usePosts from "../hooks/usePosts";
 import useGroups from "../hooks/useGroups";
 import useWindowResize from "../hooks/useWindowResize";
 import PostsList from "../components/features/Posts/PostsList";
 import GroupsList from "../components/features/Groups/GroupsList";
+import CircularProgress from "../components/common/mui/CircularProgess";
 
-// TODO: IMPLEMENT AN INFINITE LOAD, BUT FIRST I NEED TO IMPLEMENT A CREATE POST PAGE
 function Home() {
   const ref = useRef<HTMLDivElement | null>(null);
   const drawerContainer = ref?.current?.children[0];
-  const { posts, error: postsError, loading: postsLoading } = usePosts();
+  const {
+    posts,
+    error: postsError,
+    loading: postsLoading,
+    loadMorePosts,
+    refreshLoading,
+  } = usePosts();
   const { groups, error: groupsError, loading: groupsLoading } = useGroups();
   const { width } = useWindowResize(drawerContainer);
   const navigate = useNavigate();
@@ -50,12 +57,33 @@ function Home() {
   return (
     <>
       <h1>All Posts</h1>
-      <Stack mx={2} spacing={2} alignItems={{ md: "center" }}>
+      <Stack mx={2} my={2} spacing={2} alignItems={{ md: "center" }}>
         {postsLoading ? (
           postsSkeleton
         ) : (
           <PostsList posts={posts} width={width} />
         )}
+        <Button
+          variant='contained'
+          sx={{
+            backgroundColor: (theme) => theme.primary.secondary,
+            color: (theme) => theme.text.white,
+            width: {
+              xs: `calc(90% - ${width}px)`,
+              md: `calc(60% - ${width}px)`,
+            },
+            "&:hover": {
+              backgroundColor: (theme) => theme.primary.secondary,
+              opacity: 0.95,
+            },
+          }}
+          onClick={loadMorePosts}>
+          {refreshLoading ? (
+            <CircularProgress sx={{ color: (theme) => theme.text.white }} />
+          ) : (
+            "Load More Posts"
+          )}
+        </Button>
       </Stack>
 
       <aside>

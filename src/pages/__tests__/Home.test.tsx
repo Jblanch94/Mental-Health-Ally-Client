@@ -1,5 +1,7 @@
+import userEvent from "@testing-library/user-event";
+
 import App from "../../App";
-import { render, screen, findAllByRole, waitFor } from "../../test-utils/";
+import { render, screen, findAllByRole, waitFor, act } from "../../test-utils/";
 
 describe("Home Page", () => {
   test("Home Page renders without error", async () => {
@@ -16,15 +18,26 @@ describe("Home Page", () => {
   test("Home Page renders the correct number of groups as links", async () => {
     render(<App />, { initialRoutes: ["/"] });
     const sidebar = screen.getByRole("complementary");
-    const groupLinks = await findAllByRole(sidebar, "link");
+    const groupLinks = await findAllByRole(sidebar, "listitem");
     expect(groupLinks.length).toBe(1);
   });
 
   test("Home page renders the correct number of posts", async () => {
-    render(<App />, { initialRoutes: ["/"] });
-    const main = screen.getByRole("main");
-    const posts = await findAllByRole(main, "article");
-    expect(posts.length).toBe(1);
+    await act(async () => {
+      render(<App />, { initialRoutes: ["/"] });
+      const main = screen.getByRole("main");
+      let posts = await findAllByRole(main, "article");
+      expect(posts.length).toBe(5);
+
+      const loadMoreBtn = screen.getByRole("button", {
+        name: /load more posts/i,
+      });
+      await waitFor(async () => {
+        userEvent.click(loadMoreBtn);
+        posts = await findAllByRole(main, "article");
+        expect(posts.length).toBe(10);
+      });
+    });
   });
 
   test("Home Page renders a Skeleton for the posts and groups", async () => {

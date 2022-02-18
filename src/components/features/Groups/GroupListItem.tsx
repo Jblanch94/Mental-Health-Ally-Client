@@ -1,5 +1,4 @@
 import ListItem from "../../common/mui/ListItem";
-import ListItemText from "../../common/mui/ListItemText";
 import Link from "../../common/Link";
 
 interface GroupListItemProps {
@@ -18,7 +17,7 @@ function GroupListItem(props: GroupListItemProps): JSX.Element {
           "&:hover": { color: (theme) => theme.text.primary },
           color: (theme) => theme.text.white,
         }}>
-        <ListItemText primary={name} />
+        {name}
       </Link>
     </ListItem>
   );

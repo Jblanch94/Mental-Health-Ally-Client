@@ -16,6 +16,14 @@ class PostService {
 
     return response.data.data;
   }
+
+  async fetch(pageNumber: number, pageSize: number) {
+    const response = await postsAxios.get(
+      `/?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+
+    return response.data;
+  }
 }
 
 export default new PostService();
