@@ -1,4 +1,5 @@
 import Card from "../../common/mui/Card";
+import Link from "../../common/Link";
 import PostListItem from "./PostListItem";
 import { Post } from "../../../types";
 
@@ -22,12 +23,14 @@ function PostsList(props: PostsListProps): JSX.Element {
             md: `calc(60% - ${width}px)`,
           },
         }}>
-        <PostListItem
-          groupName={post.group.name}
-          userName={post.user.userName}
-          title={post.title}
-          comments={post.comments}
-        />
+        <Link to={`/posts/${post.id}`}>
+          <PostListItem
+            groupName={post.group.name}
+            userName={post.user.userName}
+            title={post.title}
+            comments={post.comments}
+          />
+        </Link>
       </Card>
     );
   });
