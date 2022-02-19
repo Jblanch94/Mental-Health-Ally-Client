@@ -12,6 +12,10 @@ import RequireAuth from "./components/features/RequireAuth";
 import ServerError from "./pages/500";
 import NotFound from "./pages/404";
 
+function Post() {
+  return <h1>Post Page</h1>;
+}
+
 const App: FunctionComponent<{}> = () => {
   return (
     <Box sx={{ bgcolor: "background.paper" }}>
@@ -32,6 +36,7 @@ const App: FunctionComponent<{}> = () => {
                 </RequireAuth>
               }
             />
+            <Route path=':id' element={<Post />} />
           </Route>
           <Route path='groups'>
             <Route
