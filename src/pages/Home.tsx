@@ -15,6 +15,7 @@ import CircularProgress from "../components/common/mui/CircularProgess";
 
 function Home() {
   const ref = useRef<HTMLDivElement | null>(null);
+
   const drawerContainer = ref?.current?.children[0];
   const {
     posts,
