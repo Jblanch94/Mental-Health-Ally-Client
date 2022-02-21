@@ -11,6 +11,7 @@ import Typography from "../components/common/mui/Typography";
 import CommentBox from "../components/features/Comments/CommentBox";
 import { useAuth } from "../contexts/auth-context";
 import UnAuthCommentBox from "../components/features/Comments/UnAuthCommentBox";
+import commentAxios from "../axios/commentAxios";
 
 export interface CommentValues {
   text: string;
@@ -18,6 +19,7 @@ export interface CommentValues {
 
 function Post() {
   const [post, setPost] = useState<PostType | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
   const { id } = useParams();
   const auth = useAuth();
 
@@ -34,7 +36,16 @@ function Post() {
       }
     };
 
-    fetchPost();
+    const fetchComments = async () => {
+      try {
+        const response = await commentAxios.get(`/Post/${id}`);
+        setComments(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    Promise.all([fetchPost(), fetchComments()]);
 
     return () => source.cancel();
   }, [id]);
