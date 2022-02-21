@@ -1,11 +1,13 @@
 import { Controller, useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import Button from "../../common/mui/Button";
 import ErrorText from "../../common/ErrorText";
+import commentService from "../../../services/CommentService";
 
-interface CommentValues {
+export interface CommentValues {
   text: string;
 }
 
@@ -14,10 +16,18 @@ function CommentBox(): JSX.Element {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CommentValues>();
+  const { id } = useParams();
 
-  function onSubmit(data: CommentValues) {
-    console.log(data);
+  async function onSubmit(data: CommentValues) {
+    try {
+      const response = await commentService.create(data, id, null);
+      console.log(response);
+      reset();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
