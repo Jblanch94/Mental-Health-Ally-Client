@@ -5,16 +5,13 @@ import { Box } from "@mui/material";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
+import Post from "./pages/Post";
 import CreatePost from "./pages/CreatePost";
 import CreateGroup from "./pages/CreateGroup";
 import Layout from "./components/layout";
 import RequireAuth from "./components/features/RequireAuth";
 import ServerError from "./pages/500";
 import NotFound from "./pages/404";
-
-function Post() {
-  return <h1>Post Page</h1>;
-}
 
 const App: FunctionComponent<{}> = () => {
   return (
