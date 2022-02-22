@@ -4,11 +4,12 @@ import axios from "axios";
 import MDEditor from "@uiw/react-md-editor";
 
 import postsAxios from "../axios/postsAxios";
-import { Post as PostType } from "../types";
+import { Post as PostType, Comment } from "../types";
 import Box from "../components/common/mui/Box";
 import Stack from "../components/common/mui/Stack";
 import Typography from "../components/common/mui/Typography";
 import CommentBox from "../components/features/Comments/CommentBox";
+import CommentsList from "../components/features/Comments/CommentsList";
 import { useAuth } from "../contexts/auth-context";
 import UnAuthCommentBox from "../components/features/Comments/UnAuthCommentBox";
 import commentAxios from "../axios/commentAxios";
@@ -83,11 +84,10 @@ function Post() {
             px: (theme) => theme.spacing(1),
             py: (theme) => theme.spacing(1.2),
           }}>
-          <MDEditor.Markdown source={post?.body} />
+          <MDEditor.Markdown source={post && post.body ? post.body : ""} />
         </Box>
         <Typography variant='body1'>
-          {post?.comments.length}{" "}
-          {post?.comments.length === 1 ? "comment" : "comments"}
+          {comments.length} {comments.length === 1 ? "comment" : "comments"}
         </Typography>
       </Stack>
 
@@ -95,6 +95,7 @@ function Post() {
       {auth?.authenticated ? <CommentBox /> : <UnAuthCommentBox />}
 
       {/* List of all comments */}
+      <CommentsList comments={comments} />
     </Stack>
   );
 }
