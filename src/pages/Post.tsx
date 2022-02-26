@@ -24,12 +24,15 @@ function Post() {
   const { id } = useParams();
   const auth = useAuth();
 
+  console.log(comments);
+
   useEffect(() => {
-    const source = axios.CancelToken.source();
+    const postSource = axios.CancelToken.source();
+    const commentsSource = axios.CancelToken.source();
     const fetchPost = async () => {
       try {
         const response = await postsAxios.get(`/${id}`, {
-          cancelToken: source.token,
+          cancelToken: postSource.token,
         });
         setPost(response.data.data);
       } catch (err) {
@@ -39,16 +42,25 @@ function Post() {
 
     const fetchComments = async () => {
       try {
-        const response = await commentAxios.get(`/Post/${id}`);
+        const response = await commentAxios.get(`/Post/${id}`, {
+          cancelToken: commentsSource.token,
+        });
+
         setComments(response.data);
       } catch (err) {
         console.error(err);
       }
     };
 
-    Promise.all([fetchPost(), fetchComments()]);
+    const fetchPostAndComments = async () =>
+      await Promise.all([fetchPost(), fetchComments()]);
 
-    return () => source.cancel();
+    fetchPostAndComments();
+
+    return () => {
+      postSource.cancel();
+      commentsSource.cancel();
+    };
   }, [id]);
 
   return (
@@ -84,15 +96,22 @@ function Post() {
             px: (theme) => theme.spacing(1),
             py: (theme) => theme.spacing(1.2),
           }}>
-          <MDEditor.Markdown source={post && post.body ? post.body : ""} />
+          <MDEditor.Markdown
+            source={post && post.body ? post.body : ""}
+            data-testid='md'
+          />
         </Box>
         <Typography variant='body1'>
-          {comments.length} {comments.length === 1 ? "comment" : "comments"}
+          {comments?.length} {comments?.length === 1 ? "comment" : "comments"}
         </Typography>
       </Stack>
 
       {/* Comment Box */}
-      {auth?.authenticated ? <CommentBox /> : <UnAuthCommentBox />}
+      {auth?.authenticated ? (
+        <CommentBox setComments={setComments} comments={comments} />
+      ) : (
+        <UnAuthCommentBox />
+      )}
 
       {/* List of all comments */}
       <CommentsList comments={comments} />

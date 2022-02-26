@@ -4,7 +4,7 @@ class DateFormatter {
   }
 
   getTimeDifferenceBetweenTwoDates(d1: Date, d2: Date): number {
-    return (d1.getTime() - d2.getTime()) / (1000 * 60 * 60 * 24);
+    return Math.abs((d1.getTime() - d2.getTime()) / (1000 * 60 * 60 * 24));
   }
 
   formatDateIntoStringDifferenceBetweenTwoDates(

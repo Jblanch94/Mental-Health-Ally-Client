@@ -8,9 +8,10 @@ interface CommentsListProps {
 
 function CommentsList(props: CommentsListProps): JSX.Element {
   const { comments } = props;
+
   return (
     <List>
-      {comments.map((comment) => (
+      {comments?.map((comment) => (
         <CommentListItem
           key={comment.id}
           createdAt={comment.createdAt}

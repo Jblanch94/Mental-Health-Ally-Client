@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
@@ -6,12 +7,19 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Button from "../../common/mui/Button";
 import ErrorText from "../../common/ErrorText";
 import commentService from "../../../services/CommentService";
+import { Comment } from "../../../types";
 
 export interface CommentValues {
   text: string;
 }
 
-function CommentBox(): JSX.Element {
+interface CommentBoxProps {
+  setComments: Dispatch<SetStateAction<Comment[]>>;
+  comments: Comment[];
+}
+
+function CommentBox(props: CommentBoxProps): JSX.Element {
+  const { setComments, comments } = props;
   const {
     control,
     handleSubmit,
@@ -23,8 +31,8 @@ function CommentBox(): JSX.Element {
   async function onSubmit(data: CommentValues) {
     try {
       const response = await commentService.create(data, id, null);
-      console.log(response);
-      reset();
+      reset({ text: "" });
+      setComments([...comments, response]);
     } catch (err) {
       console.error(err);
     }
