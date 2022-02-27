@@ -1,14 +1,16 @@
 import React from "react";
-import { Link } from "@mui/material";
+import { Link, SxProps, Theme } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 interface ButtonLinkProps {
   to: string;
   children: React.ReactNode;
+  sx?: SxProps<Theme> | undefined;
 }
 
 function ButtonLink(props: ButtonLinkProps): JSX.Element {
   const { to, children } = props;
+
   return (
     <Link
       component={RouterLink}
@@ -30,6 +32,7 @@ function ButtonLink(props: ButtonLinkProps): JSX.Element {
           color: (theme) => theme.button.main,
           borderColor: (theme) => theme.button.white,
         },
+        ...props?.sx,
       }}>
       {children}
     </Link>

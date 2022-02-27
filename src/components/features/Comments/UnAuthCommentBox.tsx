@@ -12,10 +12,11 @@ function UnAuthCommentBox() {
       sx={{
         "& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input": {
           textAlign: "center",
+          fontSize: 2,
         },
 
         "& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root": {
-          top: 32,
+          top: 28,
           bottom: 0,
         },
       }}
@@ -32,9 +33,25 @@ function UnAuthCommentBox() {
         },
         endAdornment: (
           <InputAdornment position='end'>
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
-              <ButtonLink to='/auth/login'>Login</ButtonLink>
-              <ButtonLink to='/auth/signup'>Sign Up</ButtonLink>
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+              <ButtonLink
+                to='/auth/login'
+                sx={{
+                  "&:hover": {
+                    opacity: 0.9,
+                  },
+                }}>
+                Login
+              </ButtonLink>
+              <ButtonLink
+                to='/auth/signup'
+                sx={{
+                  "&:hover": {
+                    opacity: 0.9,
+                  },
+                }}>
+                Sign Up
+              </ButtonLink>
             </Stack>
           </InputAdornment>
         ),
