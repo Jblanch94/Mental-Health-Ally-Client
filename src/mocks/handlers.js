@@ -256,4 +256,64 @@ export const handlers = [
       return res(ctx.status(201), ctx.json({ data: group }));
     }
   ),
+
+  rest.get(
+    "https://webapi20211228172142.azurewebsites.net/api/Posts/1",
+    (req, res, ctx) => {
+      const post = {
+        id: 1,
+        title: "Post 1",
+        body: "**Body 1**",
+        createdAt: "2021-08-20",
+        user: {
+          userName: "test user",
+        },
+        group: {
+          name: "Group 1",
+        },
+      };
+
+      return res(ctx.status(200), ctx.json({ data: post }));
+    }
+  ),
+
+  rest.get(
+    "https://webapi20211228172142.azurewebsites.net/api/Comments/Post/1",
+    (req, res, ctx) => {
+      const comments = [
+        {
+          id: 1,
+          text: "Comment 1",
+          createdAt: "2022-02-22T16:19:03.970Z",
+          user: { userName: "test user" },
+          parent: null,
+        },
+        {
+          id: 2,
+          text: "Comment 2",
+          createdAt: "2022-02-22T16:19:03.970Z",
+          user: { userName: "user 2" },
+          parent: null,
+        },
+      ];
+
+      return res(ctx.status(200), ctx.json(comments));
+    }
+  ),
+  rest.post(
+    "https://webapi20211228172142.azurewebsites.net/api/Comments/Post/1/Comment",
+    (req, res, ctx) => {
+      const newComment = {
+        id: 3,
+        text: req.body.text,
+        createdAt: "2022-02-22T16:19:03.970Z",
+        parent: null,
+        user: {
+          userName: "user 1",
+        },
+      };
+
+      return res(ctx.status(201), ctx.json(newComment));
+    }
+  ),
 ];

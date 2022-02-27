@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
+import Post from "./pages/Post";
 import CreatePost from "./pages/CreatePost";
 import CreateGroup from "./pages/CreateGroup";
 import Layout from "./components/layout";
@@ -32,6 +33,7 @@ const App: FunctionComponent<{}> = () => {
                 </RequireAuth>
               }
             />
+            <Route path=':id' element={<Post />} />
           </Route>
           <Route path='groups'>
             <Route

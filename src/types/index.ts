@@ -2,7 +2,13 @@ export interface User {
   userName: string;
 }
 
-export interface Comment {}
+export interface Comment {
+  id: string;
+  parent: string | null;
+  text: string;
+  createdAt: string;
+  user: User;
+}
 
 export interface Group {
   id: string;
