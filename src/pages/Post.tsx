@@ -139,8 +139,6 @@ function Post() {
     };
   }, [id]);
 
-  console.log(state.isLoading);
-
   return (
     <Stack
       spacing={2}

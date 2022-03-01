@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Post from "./pages/Post";
+import Groups from "./pages/Groups";
+import Group from "./pages/Group";
 import CreatePost from "./pages/CreatePost";
 import CreateGroup from "./pages/CreateGroup";
 import Layout from "./components/layout";
@@ -44,6 +46,8 @@ const App: FunctionComponent<{}> = () => {
                 </RequireAuth>
               }
             />
+            <Route index element={<Groups />} />
+            <Route path=':id' element={<Group />} />
           </Route>
         </Route>
         <Route path='/500' element={<ServerError />} />
