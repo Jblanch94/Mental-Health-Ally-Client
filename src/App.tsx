@@ -51,7 +51,14 @@ const App: FunctionComponent<{}> = () => {
                 </Suspense>
               }
             />
-            <Route path=':id' element={<Post />} />
+            <Route
+              path=':id'
+              element={
+                <Suspense fallback={<CircularProgress />}>
+                  <Post />
+                </Suspense>
+              }
+            />
           </Route>
           <Route path='groups'>
             <Route
