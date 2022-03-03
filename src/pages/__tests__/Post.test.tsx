@@ -1,4 +1,11 @@
-import { render, screen, act, fireEvent, waitFor } from "../../test-utils";
+import {
+  render,
+  screen,
+  act,
+  fireEvent,
+  waitFor,
+  findByRole,
+} from "../../test-utils";
 import App from "../../App";
 
 describe("Post Page", () => {
@@ -24,13 +31,15 @@ describe("Post Page", () => {
 
   test("User not authenticated Login and Sign Up Links appear", async () => {
     sessionStorage.removeItem("accessToken");
-    render(<App />, { initialRoutes: ["/posts/1"] });
-    const loginLinks = await screen.findAllByRole("link", { name: /login/i });
-    const signupLinks = await screen.findAllByRole("link", {
-      name: /sign up/i,
+    await act(async () => {
+      render(<App />, { initialRoutes: ["/posts/1"] });
     });
-    expect(loginLinks.length).toBe(2);
-    expect(signupLinks.length).toBe(2);
+    const main = screen.getByRole("main");
+    const loginLink = await findByRole(main, "link", { name: "Login" });
+    const signUpLink = await findByRole(main, "link", { name: "Sign Up" });
+
+    expect(loginLink).toBeInTheDocument();
+    expect(signUpLink).toBeInTheDocument();
   });
 
   test("Creating a new comment adds the new comment to the list of comments", async () => {

@@ -316,4 +316,64 @@ export const handlers = [
       return res(ctx.status(201), ctx.json(newComment));
     }
   ),
+
+  rest.get(
+    "https://webapi20211228172142.azurewebsites.net/Post/1",
+    (req, res, ctx) => {
+      const data = {
+        id: 1,
+        name: "Misc",
+        posts: [
+          {
+            id: 1,
+            title: "Title 1",
+            body: "Body 1",
+            createdAt: "2022-01-18T15:23:16.7453526",
+            updatedAt: "2022-01-18T15:23:16.7453526",
+            user: {
+              userName: "test user",
+            },
+          },
+        ],
+      };
+
+      return res(ctx.status(200), ctx.json({ data: data }));
+    }
+  ),
+
+  rest.get(
+    "https://webapi20211228172142.azurewebsites.net/api/Groups/Post/1",
+    (req, res, ctx) => {
+      const data = {
+        id: 1,
+        name: "Misc",
+        posts: [
+          {
+            id: 1,
+            title: "Title 1",
+            body: "Body 1",
+            createdAt: "2022-01-18T15:23:16.7453526",
+            updatedAt: "2022-01-18T15:23:16.7453544",
+            user: {
+              userName: "test user",
+            },
+            comments: [],
+          },
+          {
+            id: 2,
+            title: "Title 2",
+            body: "Body 2",
+            createdAt: "2022-01-18T15:23:16.7453526",
+            updatedAt: "2022-01-18T15:23:16.7453544",
+            user: {
+              userName: "user 2",
+            },
+            comments: [],
+          },
+        ],
+      };
+
+      return res(ctx.status(200), ctx.json({ data: data }));
+    }
+  ),
 ];

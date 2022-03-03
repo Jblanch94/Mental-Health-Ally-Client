@@ -13,7 +13,7 @@ export interface Comment {
 export interface Group {
   id: string;
   name: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface Post {
