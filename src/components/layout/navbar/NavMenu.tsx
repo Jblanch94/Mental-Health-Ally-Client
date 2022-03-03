@@ -34,7 +34,8 @@ function NavMenu(props: NavMenuProps): JSX.Element {
           sx={{
             display: "block",
             mr: (theme) => theme.spacing(4),
-            "&:hover": { color: (theme) => theme.text.white },
+            color: (theme) => theme.text.white,
+            "&:hover": { color: (theme) => theme.primary.secondary },
           }}>
           <AddCircleIcon fontSize='medium' />
         </Link>
@@ -45,8 +46,9 @@ function NavMenu(props: NavMenuProps): JSX.Element {
             display: "block",
             mr: (theme) => theme.spacing(2),
             fontSize: (theme) => theme.spacing(2),
+            color: (theme) => theme.text.white,
             "&:hover": {
-              color: (theme) => theme.text.white,
+              color: (theme) => theme.primary.secondary,
             },
           }}>
           jblanchard
@@ -59,6 +61,7 @@ function NavMenu(props: NavMenuProps): JSX.Element {
     <Box
       sx={{
         display: { xs: "none", sm: "block" },
+        color: (theme) => theme.text.white,
       }}>
       {content}
     </Box>

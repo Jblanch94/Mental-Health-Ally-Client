@@ -16,7 +16,7 @@ function PostListItem(props: PostListItemProps): JSX.Element {
       <Typography fontSize={14} gutterBottom>
         {`g/${groupName} - posted by ${userName}`}
       </Typography>
-      <Typography variant='h3' fontSize={16} gutterBottom>
+      <Typography variant='h2' fontSize={16} gutterBottom>
         {title}
       </Typography>
       <Typography fontSize={14}>{`${comments.length} ${

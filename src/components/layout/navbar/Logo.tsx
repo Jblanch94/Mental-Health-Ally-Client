@@ -1,9 +1,5 @@
-import React from "react";
 import { Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import { Theme } from "@mui/material/styles";
-
-// import Link from "../../common/mui/Link";
 
 interface LogoProps {
   text: string;
@@ -17,7 +13,13 @@ function Logo(props: LogoProps): JSX.Element {
       component={RouterLink}
       to='/'
       underline='none'
-      sx={{ mx: 2, color: (theme: Theme) => theme.text.white }}>
+      sx={{
+        mx: 2,
+        color: (theme) => theme.text.white,
+        "&:hover": {
+          color: (theme) => theme.primary.secondary,
+        },
+      }}>
       {text}
     </Link>
   );

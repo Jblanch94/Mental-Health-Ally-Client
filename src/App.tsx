@@ -1,19 +1,19 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
 import Home from "./pages/Home";
-import Post from "./pages/Post";
-import Groups from "./pages/Groups";
-import Group from "./pages/Group";
-import CreatePost from "./pages/CreatePost";
-import CreateGroup from "./pages/CreateGroup";
 import Layout from "./components/layout";
 import RequireAuth from "./components/features/RequireAuth";
-import ServerError from "./pages/500";
-import NotFound from "./pages/404";
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Post = lazy(() => import("./pages/Post"));
+const Groups = lazy(() => import("./pages/Groups"));
+const Group = lazy(() => import("./pages/Group"));
+const CreatePost = lazy(() => import("./pages/CreatePost"));
+const CreateGroup = lazy(() => import("./pages/CreateGroup"));
+const ServerError = lazy(() => import("./pages/500"));
+const NotFound = lazy(() => import("./pages/404"));
 
 const App: FunctionComponent<{}> = () => {
   return (
@@ -22,17 +22,33 @@ const App: FunctionComponent<{}> = () => {
         <Route element={<Layout />}>
           <Route path='/' element={<Home />} />
           <Route path='auth'>
-            <Route path='login' element={<Login />} />
-            <Route path='signup' element={<Signup />} />
+            <Route
+              path='login'
+              element={
+                <Suspense fallback={<CircularProgress />}>
+                  <Login />
+                </Suspense>
+              }
+            />
+            <Route
+              path='signup'
+              element={
+                <Suspense fallback={<CircularProgress />}>
+                  <Signup />
+                </Suspense>
+              }
+            />
           </Route>
 
           <Route path='posts'>
             <Route
               path='create'
               element={
-                <RequireAuth>
-                  <CreatePost />
-                </RequireAuth>
+                <Suspense fallback={<CircularProgress />}>
+                  <RequireAuth>
+                    <CreatePost />
+                  </RequireAuth>
+                </Suspense>
               }
             />
             <Route path=':id' element={<Post />} />
@@ -41,17 +57,47 @@ const App: FunctionComponent<{}> = () => {
             <Route
               path='create'
               element={
-                <RequireAuth>
-                  <CreateGroup />
-                </RequireAuth>
+                <Suspense fallback={<CircularProgress />}>
+                  <RequireAuth>
+                    <CreateGroup />
+                  </RequireAuth>
+                </Suspense>
               }
             />
-            <Route index element={<Groups />} />
-            <Route path=':id' element={<Group />} />
+            <Route
+              index
+              element={
+                <Suspense fallback={<CircularProgress />}>
+                  <Groups />
+                </Suspense>
+              }
+            />
+            <Route
+              path=':id'
+              element={
+                <Suspense fallback={<CircularProgress />}>
+                  <Group />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
-        <Route path='/500' element={<ServerError />} />
-        <Route path='*' element={<NotFound />} />
+        <Route
+          path='/500'
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <ServerError />
+            </Suspense>
+          }
+        />
+        <Route
+          path='*'
+          element={
+            <Suspense fallback={<CircularProgress />}>
+              <NotFound />
+            </Suspense>
+          }
+        />
       </Routes>
     </Box>
   );

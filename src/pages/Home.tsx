@@ -68,7 +68,8 @@ function Home() {
           variant='contained'
           sx={{
             backgroundColor: (theme) => theme.primary.secondary,
-            color: (theme) => theme.text.white,
+            color: "#333",
+            fontSize: 16,
             width: {
               xs: `calc(90% - ${width}px)`,
               md: `calc(60% - ${width}px)`,
