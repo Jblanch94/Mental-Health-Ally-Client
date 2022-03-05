@@ -14,6 +14,7 @@ import CommentsList from "../components/features/Comments/CommentsList";
 import { useAuth } from "../contexts/auth-context";
 import UnAuthCommentBox from "../components/features/Comments/UnAuthCommentBox";
 import commentAxios from "../axios/commentAxios";
+import NotFound from "../components/common/NotFound";
 
 export interface CommentValues {
   text: string;
@@ -138,6 +139,10 @@ function Post() {
       commentsSource.cancel();
     };
   }, [id]);
+
+  if (state.data.post === null && !state.isLoading) {
+    return <NotFound />;
+  }
 
   return (
     <Stack

@@ -8,6 +8,7 @@ import Typography from "../components/common/mui/Typography";
 import Box from "../components/common/mui/Box";
 import groupsAxios from "../axios/groupsAxios";
 import { Group } from "../types";
+import NotFound from "../components/common/NotFound";
 
 interface State {
   isLoading: boolean;
@@ -77,6 +78,10 @@ function Groups() {
       source.cancel();
     };
   }, []);
+
+  if (state.groups.length === 0 && !state.isLoading) {
+    return <NotFound />;
+  }
 
   return (
     <>

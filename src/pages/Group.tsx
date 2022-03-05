@@ -10,6 +10,7 @@ import PostsList from "../components/features/Posts/PostsList";
 import groupsAxios from "../axios/groupsAxios";
 import { Group, Post } from "../types";
 import Typography from "../components/common/mui/Typography";
+import NotFound from "../components/common/NotFound";
 
 enum ActionType {
   FETCH_POSTS_WITH_GROUP = "FETCH_POSTS_WITH_GROUP",
@@ -72,10 +73,13 @@ function GroupPage() {
         const response = await groupsAxios.get(`/Post/${id}`, {
           cancelToken: source.token,
         });
-        dispatch({
-          type: ActionType.FETCH_POSTS_WITH_GROUP,
-          payload: response.data.data,
-        });
+
+        if (response.data.data !== null) {
+          dispatch({
+            type: ActionType.FETCH_POSTS_WITH_GROUP,
+            payload: response.data.data,
+          });
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -87,6 +91,10 @@ function GroupPage() {
 
     return () => source.cancel();
   }, [id]);
+
+  if (state.data.group.id === "") {
+    return <NotFound />;
+  }
 
   return (
     <Box mt={10} px={2}>
