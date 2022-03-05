@@ -1,5 +1,6 @@
 import Card from "../../common/mui/Card";
 import Link from "../../common/Link";
+import NoData from "../../common/NoData";
 import PostListItem from "./PostListItem";
 import { Post } from "../../../types";
 
@@ -11,6 +12,11 @@ interface PostsListProps {
 
 function PostsList(props: PostsListProps): JSX.Element {
   const { posts, width, groupName } = props;
+
+  if (posts.length === 0) {
+    return <NoData />;
+  }
+
   const cardPosts = posts.map((post: Post): JSX.Element => {
     return (
       <Card
